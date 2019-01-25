@@ -85,7 +85,7 @@ class Multiplier extends Container {
 		$this->monitor(self::class);
 	}
 
-	public function getForm($throw = true) {
+	public function getForm(bool $throw = true): ?Form {
 		if ($this->form) {
 			return $this->form;
 		}
@@ -93,7 +93,7 @@ class Multiplier extends Container {
 		return parent::getForm($throw);
 	}
 
-	protected function attached($obj) {
+	protected function attached(IComponent $obj): void{
 		parent::attached($obj);
 
 		if ($obj instanceof self) {
@@ -115,7 +115,7 @@ class Multiplier extends Container {
 		}
 	}
 
-	protected function whenAttached() {
+	protected function whenAttached(): void {
 		if ($this->attachedCalled) {
 			return;
 		}
@@ -231,7 +231,7 @@ class Multiplier extends Container {
 		return $this->maxCopies === null || $this->totalCopies < $this->maxCopies;
 	}
 
-	public function validate(array $controls = null) {
+	public function validate(array $controls = null): void {
 		$controls = $controls === null ? iterator_to_array($this->getComponents()) : $controls;
 
 		foreach ($controls as $index => $control) {
@@ -506,7 +506,7 @@ class Multiplier extends Container {
 	 * @param bool $asArray
 	 * @return array|\Nette\Utils\ArrayHash
 	 */
-	public function getValues($asArray = false) {
+	public function getValues(bool $asArray = false) {
 		if (!$this->resetKeys) {
 			return parent::getValues($asArray);
 		}
@@ -517,20 +517,9 @@ class Multiplier extends Container {
 	}
 
 	/**
-	 * @param $name
-	 * @param bool $need
-	 * @return IComponent
-	 */
-	public function getComponent($name, $need = true) {
-		$this->createCopies();
-
-		return parent::getComponent($name, $need);
-	}
-
-	/**
 	 * @return \ArrayIterator|IControl[]
 	 */
-	public function getControls() {
+	public function getControls(): \Iterator {
 		$this->createCopies();
 
 		return parent::getControls();
